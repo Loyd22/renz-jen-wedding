@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/*
+  Global theme variables.
+
+  Components can use these values without repeating hexadecimal colors.
+*/
+:root {
+  --color-dark-olive: #183c2b;
+  --color-deep-green: #102d21;
+  --color-antique-gold: #b89a57;
+  --color-soft-gold: #d4bf88;
+  --color-warm-white: #faf8f3;
+  --color-white: #ffffff;
+  --color-charcoal: #2d302c;
+
+  --background: var(--color-warm-white);
+  --foreground: var(--color-charcoal);
+}
+
+/* Use border-box sizing so spacing is more predictable. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Allow navigation links to scroll smoothly to their sections. */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent accidental horizontal scrolling on small screens. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Visible keyboard focus improves accessibility. */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 3px;
+}
+
+/*
+  Reduce animations for visitors who have enabled reduced motion
+  in their device or browser settings.
+*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

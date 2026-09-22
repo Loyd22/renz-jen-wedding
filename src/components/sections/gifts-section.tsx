@@ -36,7 +36,7 @@ export function GiftsSection() {
             sm:py-20
           "
         >
-          <CoupleMonogram light />
+          <CoupleMonogram />
 
           <Gift
             aria-hidden="true"

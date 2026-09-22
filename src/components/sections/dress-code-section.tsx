@@ -22,7 +22,13 @@ export function DressCodeSection() {
         <SectionHeading
           eyebrow="What to Wear"
           title={weddingConfig.dressCode.title}
-          description={weddingConfig.dressCode.description}
+          description={
+            <>
+              {weddingConfig.dressCode.description}
+              <br />
+              <strong>{weddingConfig.dressCode.attire}</strong>
+            </>
+          }
         />
 
         {/* Attire instructions for gentlemen and ladies */}
@@ -116,7 +122,7 @@ export function DressCodeSection() {
             className="
                 mx-auto
                 mt-12
-                max-w-6xl
+                max-w-4xl
                 overflow-hidden
                 bg-transparent
                 px-2
@@ -170,7 +176,7 @@ export function DressCodeSection() {
               grid-cols-3
               gap-x-4
               gap-y-8
-              sm:grid-cols-6
+              sm:grid-cols-5
             "
           >
             {weddingConfig.dressCode.colors.map((color) => (

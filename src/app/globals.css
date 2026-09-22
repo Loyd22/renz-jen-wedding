@@ -6,8 +6,8 @@
   Components can use these values without repeating hexadecimal colors.
 */
 :root {
-  --color-dark-olive: #183c2b;
-  --color-deep-green: #102d21;
+  --color-dark-olive: #636B2F;
+  --color-deep-green: #636B2F;
   --color-antique-gold: #b89a57;
   --color-soft-gold: #d4bf88;
   --color-warm-white: #faf8f3;

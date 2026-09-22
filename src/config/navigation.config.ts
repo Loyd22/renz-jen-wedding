@@ -8,10 +8,6 @@ export const navigationItems = [
     href: "#invitation",
   },
   {
-    label: "Story",
-    href: "#story",
-  },
-  {
     label: "Details",
     href: "#details",
   },

@@ -8,6 +8,7 @@ import {
 
 import {
   LogOut,
+  Printer,
   RefreshCw,
   Users,
   UserCheck,
@@ -30,6 +31,19 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
+interface PrintableGuest {
+  name: string;
+  primaryGuest: string;
+  type:
+    | "Primary Guest"
+    | "Additional Guest";
+}
+
+type StatusFilter =
+  | "all"
+  | "attending"
+  | "declined";
+
 export function AdminDashboard({
   onLogout,
 }: AdminDashboardProps) {
@@ -48,7 +62,11 @@ export function AdminDashboard({
     setError,
   ] = useState<string | null>(null);
 
-  // Load the RSVP responses when the dashboard first opens.
+  const [
+    statusFilter,
+    setStatusFilter,
+  ] = useState<StatusFilter>("all");
+
   useEffect(() => {
     let isMounted = true;
 
@@ -85,7 +103,6 @@ export function AdminDashboard({
     };
   }, []);
 
-  // Used when the admin manually presses Refresh.
   async function handleRefresh() {
     setIsLoading(true);
     setError(null);
@@ -150,6 +167,100 @@ export function AdminDashboard({
       };
     }, [submissions]);
 
+  const filteredSubmissions =
+    useMemo(() => {
+      if (statusFilter === "all") {
+        return submissions;
+      }
+
+      return submissions.filter(
+        (submission) =>
+          submission.attendance ===
+          statusFilter,
+      );
+    }, [
+      submissions,
+      statusFilter,
+    ]);
+
+  const printableGuests =
+    useMemo<PrintableGuest[]>(() => {
+      const guests: PrintableGuest[] =
+        [];
+
+      const attendingSubmissions =
+        submissions.filter(
+          (submission) =>
+            submission.attendance ===
+            "attending",
+        );
+
+      for (
+        const submission of
+          attendingSubmissions
+      ) {
+        guests.push({
+          name:
+            submission.fullName,
+
+          primaryGuest:
+            submission.fullName,
+
+          type:
+            "Primary Guest",
+        });
+
+        submission.guestNames.forEach(
+          (guestName) => {
+            guests.push({
+              name: guestName,
+
+              primaryGuest:
+                submission.fullName,
+
+              type:
+                "Additional Guest",
+            });
+          },
+        );
+
+        const expectedAdditionalGuests =
+          Math.max(
+            submission.guestCount -
+              1,
+            0,
+          );
+
+        const unnamedGuestCount =
+          Math.max(
+            expectedAdditionalGuests -
+              submission.guestNames
+                .length,
+            0,
+          );
+
+        for (
+          let index = 0;
+          index <
+          unnamedGuestCount;
+          index += 1
+        ) {
+          guests.push({
+            name:
+              "Name not provided",
+
+            primaryGuest:
+              submission.fullName,
+
+            type:
+              "Additional Guest",
+          });
+        }
+      }
+
+      return guests;
+    }, [submissions]);
+
   async function handleLogout() {
     const auth =
       getFirebaseAuth();
@@ -161,29 +272,574 @@ export function AdminDashboard({
     onLogout();
   }
 
+  function handlePrint() {
+    window.print();
+  }
+
   return (
-    <div>
-      {/* Dashboard header */}
-      <div
-        className="
-          flex
-          flex-col
-          gap-5
-          border-b
-          border-[var(--color-antique-gold)]/25
-          pb-8
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
-      >
-        <div>
+    <>
+      {/* Normal admin dashboard */}
+      <div className="print:hidden">
+        {/* Header */}
+        <div
+          className="
+            flex
+            flex-col
+            gap-5
+            border-b
+            border-[var(--color-antique-gold)]/25
+            pb-8
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
+          <div>
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.2em]
+                text-[var(--color-antique-gold)]
+              "
+            >
+              Renz & Jen
+            </p>
+
+            <h1
+              className="
+                mt-2
+                font-[family-name:var(--font-serif)]
+                text-4xl
+                text-[var(--color-dark-olive)]
+              "
+            >
+              RSVP Dashboard
+            </h1>
+          </div>
+
+          <div
+            className="
+              flex
+              flex-wrap
+              gap-3
+            "
+          >
+            <button
+              type="button"
+              onClick={
+                handlePrint
+              }
+              disabled={
+                printableGuests.length ===
+                0
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                border
+                border-[var(--color-dark-olive)]
+                px-4
+                py-2
+                text-sm
+                text-[var(--color-dark-olive)]
+                transition
+                hover:bg-[var(--color-dark-olive)]
+                hover:text-white
+                disabled:cursor-not-allowed
+                disabled:opacity-40
+              "
+            >
+              <Printer
+                size={16}
+              />
+
+              Print Attendee List
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                void handleRefresh()
+              }
+              disabled={
+                isLoading
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                border
+                border-[var(--color-dark-olive)]
+                px-4
+                py-2
+                text-sm
+                text-[var(--color-dark-olive)]
+                transition
+                hover:bg-[var(--color-dark-olive)]
+                hover:text-white
+                disabled:cursor-not-allowed
+                disabled:opacity-50
+              "
+            >
+              <RefreshCw
+                size={16}
+                className={
+                  isLoading
+                    ? "animate-spin"
+                    : ""
+                }
+              />
+
+              Refresh
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                void handleLogout()
+              }
+              className="
+                flex
+                items-center
+                gap-2
+                bg-[var(--color-dark-olive)]
+                px-4
+                py-2
+                text-sm
+                text-white
+              "
+            >
+              <LogOut
+                size={16}
+              />
+
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* Statistics */}
+        <div
+          className="
+            mt-8
+            grid
+            gap-4
+            sm:grid-cols-2
+            lg:grid-cols-4
+          "
+        >
+          <StatCard
+            title="Responses"
+            value={
+              statistics.responses
+            }
+            icon={
+              <Users
+                size={20}
+              />
+            }
+          />
+
+          <StatCard
+            title="Accepting"
+            value={
+              statistics
+                .attendingResponses
+            }
+            icon={
+              <UserCheck
+                size={20}
+              />
+            }
+          />
+
+          <StatCard
+            title="Declined"
+            value={
+              statistics
+                .declinedResponses
+            }
+            icon={
+              <UserX
+                size={20}
+              />
+            }
+          />
+
+          <StatCard
+            title="Total Guests"
+            value={
+              statistics
+                .totalAttendingGuests
+            }
+            icon={
+              <Users
+                size={20}
+              />
+            }
+          />
+        </div>
+
+        {/* Filter buttons */}
+        <div
+          className="
+            mt-8
+            flex
+            flex-wrap
+            gap-3
+          "
+        >
+          <button
+            type="button"
+            onClick={() =>
+              setStatusFilter(
+                "all",
+              )
+            }
+            className={`
+              border
+              px-5
+              py-2
+              text-sm
+              font-medium
+              transition
+
+              ${
+                statusFilter ===
+                "all"
+                  ? `
+                    border-[var(--color-dark-olive)]
+                    bg-[var(--color-dark-olive)]
+                    text-white
+                  `
+                  : `
+                    border-[var(--color-dark-olive)]/40
+                    bg-transparent
+                    text-[var(--color-dark-olive)]
+                    hover:border-[var(--color-dark-olive)]
+                  `
+              }
+            `}
+          >
+            All (
+            {
+              statistics.responses
+            }
+            )
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setStatusFilter(
+                "attending",
+              )
+            }
+            className={`
+              border
+              px-5
+              py-2
+              text-sm
+              font-medium
+              transition
+
+              ${
+                statusFilter ===
+                "attending"
+                  ? `
+                    border-[var(--color-dark-olive)]
+                    bg-[var(--color-dark-olive)]
+                    text-white
+                  `
+                  : `
+                    border-[var(--color-dark-olive)]/40
+                    bg-transparent
+                    text-[var(--color-dark-olive)]
+                    hover:border-[var(--color-dark-olive)]
+                  `
+              }
+            `}
+          >
+            Attending (
+            {
+              statistics.attendingResponses
+            }
+            )
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              setStatusFilter(
+                "declined",
+              )
+            }
+            className={`
+              border
+              px-5
+              py-2
+              text-sm
+              font-medium
+              transition
+
+              ${
+                statusFilter ===
+                "declined"
+                  ? `
+                    border-red-700
+                    bg-red-700
+                    text-white
+                  `
+                  : `
+                    border-red-700/40
+                    bg-transparent
+                    text-red-700
+                    hover:border-red-700
+                  `
+              }
+            `}
+          >
+            Declined (
+            {
+              statistics.declinedResponses
+            }
+            )
+          </button>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <p
+            role="alert"
+            className="
+              mt-8
+              border-l-2
+              border-red-700
+              bg-red-50
+              px-4
+              py-3
+              text-red-800
+            "
+          >
+            {error}
+          </p>
+        )}
+
+        {/* Loading */}
+        {isLoading ? (
           <p
             className="
-              text-xs
+              mt-10
+              text-center
+              text-[var(--color-charcoal)]/60
+            "
+          >
+            Loading RSVP
+            responses...
+          </p>
+        ) : (
+          <div
+            className="
+              mt-5
+              overflow-x-auto
+              border
+              border-[var(--color-antique-gold)]/25
+            "
+          >
+            <table
+              className="
+                w-full
+                min-w-[1000px]
+                border-collapse
+                bg-white
+                text-left
+                text-sm
+              "
+            >
+              <thead
+                className="
+                  bg-[#F4F0E7]
+                  text-[var(--color-dark-olive)]
+                "
+              >
+                <tr>
+                  <th className="px-4 py-4">
+                    Guest
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Status
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Guests
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Additional
+                    Guests
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Contact
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Message
+                  </th>
+
+                  <th className="px-4 py-4">
+                    Submitted
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {filteredSubmissions.map(
+                  (
+                    submission,
+                  ) => (
+                    <tr
+                      key={
+                        submission.id
+                      }
+                      className="
+                        border-t
+                        border-[var(--color-antique-gold)]/15
+                      "
+                    >
+                      <td className="px-4 py-4">
+                        <p className="font-medium">
+                          {
+                            submission.fullName
+                          }
+                        </p>
+                      </td>
+
+                      <td className="px-4 py-4">
+                        <span
+                          className={
+                            submission.attendance ===
+                            "attending"
+                              ? `
+                                inline-block
+                                bg-[var(--color-dark-olive)]/10
+                                px-3
+                                py-1
+                                font-medium
+                                text-[var(--color-dark-olive)]
+                              `
+                              : `
+                                inline-block
+                                bg-red-50
+                                px-3
+                                py-1
+                                font-medium
+                                text-red-700
+                              `
+                          }
+                        >
+                          {submission.attendance ===
+                          "attending"
+                            ? "Attending"
+                            : "Declined"}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-4">
+                        {
+                          submission.guestCount
+                        }
+                      </td>
+
+                      <td className="px-4 py-4">
+                        {submission
+                          .guestNames
+                          .length >
+                        0
+                          ? submission.guestNames.join(
+                              ", ",
+                            )
+                          : "—"}
+                      </td>
+
+                      <td className="px-4 py-4">
+                        <div>
+                          {submission.email ||
+                            "—"}
+                        </div>
+
+                        <div
+                          className="
+                            mt-1
+                            text-[var(--color-charcoal)]/60
+                          "
+                        >
+                          {submission.phone ||
+                            "—"}
+                        </div>
+                      </td>
+
+                      <td
+                        className="
+                          max-w-xs
+                          px-4
+                          py-4
+                        "
+                      >
+                        {submission.message ||
+                          "—"}
+                      </td>
+
+                      <td className="px-4 py-4">
+                        {formatTimestamp(
+                          submission.createdAt,
+                        )}
+                      </td>
+                    </tr>
+                  ),
+                )}
+              </tbody>
+            </table>
+
+            {filteredSubmissions.length ===
+              0 && (
+              <p
+                className="
+                  py-12
+                  text-center
+                  text-[var(--color-charcoal)]/60
+                "
+              >
+                {statusFilter ===
+                "attending"
+                  ? "No attending guests yet."
+                  : statusFilter ===
+                      "declined"
+                    ? "No declined guests yet."
+                    : "No RSVP responses yet."}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Print-only attendee list */}
+      <section
+        className="
+          hidden
+          print:block
+          print:text-black
+        "
+      >
+        <div className="mb-8 text-center">
+          <p
+            className="
+              text-sm
               uppercase
-              tracking-[0.2em]
-              text-[var(--color-antique-gold)]
+              tracking-widest
             "
           >
             Renz & Jen
@@ -192,306 +848,149 @@ export function AdminDashboard({
           <h1
             className="
               mt-2
-              font-[family-name:var(--font-serif)]
-              text-4xl
-              text-[var(--color-dark-olive)]
+              text-3xl
+              font-bold
             "
           >
-            RSVP Dashboard
+            Wedding Attendee
+            List
           </h1>
+
+          <p className="mt-2">
+            December 10, 2026
+          </p>
+
+          <p
+            className="
+              mt-1
+              font-semibold
+            "
+          >
+            Total Expected
+            Attendees:{" "}
+            {
+              printableGuests.length
+            }
+          </p>
         </div>
 
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={() =>
-              void handleRefresh()
-            }
-            disabled={isLoading}
-            className="
-              flex
-              items-center
-              gap-2
-              border
-              border-[var(--color-dark-olive)]
-              px-4
-              py-2
-              text-sm
-              text-[var(--color-dark-olive)]
-              disabled:cursor-not-allowed
-              disabled:opacity-50
-            "
-          >
-            <RefreshCw
-              size={16}
-              className={
-                isLoading
-                  ? "animate-spin"
-                  : ""
-              }
-            />
-
-            Refresh
-          </button>
-
-          <button
-            type="button"
-            onClick={() =>
-              void handleLogout()
-            }
-            className="
-              flex
-              items-center
-              gap-2
-              bg-[var(--color-dark-olive)]
-              px-4
-              py-2
-              text-sm
-              text-white
-            "
-          >
-            <LogOut size={16} />
-
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {/* Statistics */}
-      <div
-        className="
-          mt-8
-          grid
-          gap-4
-          sm:grid-cols-2
-          lg:grid-cols-4
-        "
-      >
-        <StatCard
-          title="Responses"
-          value={
-            statistics.responses
-          }
-          icon={
-            <Users size={20} />
-          }
-        />
-
-        <StatCard
-          title="Accepting"
-          value={
-            statistics.attendingResponses
-          }
-          icon={
-            <UserCheck size={20} />
-          }
-        />
-
-        <StatCard
-          title="Declined"
-          value={
-            statistics.declinedResponses
-          }
-          icon={
-            <UserX size={20} />
-          }
-        />
-
-        <StatCard
-          title="Total Guests"
-          value={
-            statistics.totalAttendingGuests
-          }
-          icon={
-            <Users size={20} />
-          }
-        />
-      </div>
-
-      {/* Error message */}
-      {error && (
-        <p
-          role="alert"
+        <table
           className="
-            mt-8
-            border-l-2
-            border-red-700
-            bg-red-50
-            px-4
-            py-3
-            text-red-800
+            w-full
+            border-collapse
+            text-left
+            text-sm
           "
         >
-          {error}
-        </p>
-      )}
+          <thead>
+            <tr>
+              <th
+                className="
+                  border
+                  border-black
+                  px-3
+                  py-2
+                "
+              >
+                #
+              </th>
 
-      {/* Loading state */}
-      {isLoading ? (
-        <p
-          className="
-            mt-10
-            text-center
-            text-[var(--color-charcoal)]/60
-          "
-        >
-          Loading RSVP responses...
-        </p>
-      ) : (
-        <div
-          className="
-            mt-8
-            overflow-x-auto
-            border
-            border-[var(--color-antique-gold)]/25
-          "
-        >
-          <table
-            className="
-              w-full
-              min-w-[1000px]
-              border-collapse
-              bg-white
-              text-left
-              text-sm
-            "
-          >
-            <thead
-              className="
-                bg-[#F4F0E7]
-                text-[var(--color-dark-olive)]
-              "
-            >
-              <tr>
-                <th className="px-4 py-4">
-                  Guest
-                </th>
+              <th
+                className="
+                  border
+                  border-black
+                  px-3
+                  py-2
+                "
+              >
+                Guest Name
+              </th>
 
-                <th className="px-4 py-4">
-                  Status
-                </th>
+              <th
+                className="
+                  border
+                  border-black
+                  px-3
+                  py-2
+                "
+              >
+                Type
+              </th>
 
-                <th className="px-4 py-4">
-                  Guests
-                </th>
+              <th
+                className="
+                  border
+                  border-black
+                  px-3
+                  py-2
+                "
+              >
+                RSVP Under
+              </th>
+            </tr>
+          </thead>
 
-                <th className="px-4 py-4">
-                  Additional Guests
-                </th>
-
-                <th className="px-4 py-4">
-                  Contact
-                </th>
-
-                <th className="px-4 py-4">
-                  Message
-                </th>
-
-                <th className="px-4 py-4">
-                  Submitted
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {submissions.map(
-                (submission) => (
-                  <tr
-                    key={
-                      submission.id
-                    }
+          <tbody>
+            {printableGuests.map(
+              (
+                guest,
+                index,
+              ) => (
+                <tr
+                  key={`${guest.primaryGuest}-${guest.name}-${index}`}
+                >
+                  <td
                     className="
-                      border-t
-                      border-[var(--color-antique-gold)]/15
+                      border
+                      border-black
+                      px-3
+                      py-2
                     "
                   >
-                    <td className="px-4 py-4">
-                      <p className="font-medium">
-                        {
-                          submission.fullName
-                        }
-                      </p>
-                    </td>
+                    {index + 1}
+                  </td>
 
-                    <td className="px-4 py-4">
-                      {submission.attendance ===
-                      "attending"
-                        ? "Attending"
-                        : "Declined"}
-                    </td>
+                  <td
+                    className="
+                      border
+                      border-black
+                      px-3
+                      py-2
+                    "
+                  >
+                    {guest.name}
+                  </td>
 
-                    <td className="px-4 py-4">
-                      {
-                        submission.guestCount
-                      }
-                    </td>
+                  <td
+                    className="
+                      border
+                      border-black
+                      px-3
+                      py-2
+                    "
+                  >
+                    {guest.type}
+                  </td>
 
-                    <td className="px-4 py-4">
-                      {submission
-                        .guestNames
-                        .length >
-                      0
-                        ? submission.guestNames.join(
-                            ", ",
-                          )
-                        : "—"}
-                    </td>
-
-                    <td className="px-4 py-4">
-                      <div>
-                        {submission.email ||
-                          "—"}
-                      </div>
-
-                      <div
-                        className="
-                          mt-1
-                          text-[var(--color-charcoal)]/60
-                        "
-                      >
-                        {submission.phone ||
-                          "—"}
-                      </div>
-                    </td>
-
-                    <td
-                      className="
-                        max-w-xs
-                        px-4
-                        py-4
-                      "
-                    >
-                      {submission.message ||
-                        "—"}
-                    </td>
-
-                    <td className="px-4 py-4">
-                      {formatTimestamp(
-                        submission.createdAt,
-                      )}
-                    </td>
-                  </tr>
-                ),
-              )}
-            </tbody>
-          </table>
-
-          {submissions.length ===
-            0 && (
-            <p
-              className="
-                py-12
-                text-center
-                text-[var(--color-charcoal)]/60
-              "
-            >
-              No RSVP responses
-              yet.
-            </p>
-          )}
-        </div>
-      )}
-    </div>
+                  <td
+                    className="
+                      border
+                      border-black
+                      px-3
+                      py-2
+                    "
+                  >
+                    {
+                      guest.primaryGuest
+                    }
+                  </td>
+                </tr>
+              ),
+            )}
+          </tbody>
+        </table>
+      </section>
+    </>
   );
 }
 
@@ -564,8 +1063,10 @@ function formatTimestamp(
     .toLocaleString(
       "en-PH",
       {
-        dateStyle: "medium",
-        timeStyle: "short",
+        dateStyle:
+          "medium",
+        timeStyle:
+          "short",
       },
     );
 }

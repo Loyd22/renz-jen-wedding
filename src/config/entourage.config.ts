@@ -4,59 +4,45 @@
 export const entourageConfig = [
   {
     category: "Parents of the Groom",
-    members: ["Mr. Groom's Father", "Mrs. Groom's Mother"],
+    members: ["Mr. Edwin Vinzon", "Mrs. Monaliza Vinzon"],
   },
   {
     category: "Parents of the Bride",
-    members: ["Mr. Bride's Father", "Mrs. Bride's Mother"],
+    members: ["Mr. Jaime Viray (+)", "Mrs. Lucibel Viray"],
+  },
+  {
+    category: "Officiant",
+    members: ["Ptr. Patrick Simon Vinzon"],
   },
   {
     category: "Principal Sponsors",
     members: [
-      "Sponsor Name 1",
-      "Sponsor Name 2",
-      "Sponsor Name 3",
-      "Sponsor Name 4",
+      "Mr. Joseph Viray",
+      "Mrs. Gina Viray",
+      "Mr. Jimmy Cruzate",
+      "Mrs. Aurora Malinao",
+      "Mr. Ruben Alar",
+      "Mrs. Marife Alar",
+      "Mr. Melvin Tornea",
+      "Mrs. Angelita Tatad",
+      "Mr. Normito Tamayo",
+      "Mrs. Fe Viray",
     ],
   },
   {
     category: "Best Man",
-    members: ["Best Man Name"],
+    members: ["Peter Raphael Vinzon"],
   },
   {
-    category: "Maid of Honor",
-    members: ["Maid of Honor Name"],
+    category: "Matron of Honor",
+    members: ["Jobell Fontabla"],
   },
   {
-    category: "Groomsmen",
-    members: [
-      "Groomsman Name 1",
-      "Groomsman Name 2",
-      "Groomsman Name 3",
-    ],
-  },
-  {
-    category: "Bridesmaids",
-    members: [
-      "Bridesmaid Name 1",
-      "Bridesmaid Name 2",
-      "Bridesmaid Name 3",
-    ],
+    category: "Brides Man",
+    members: ["Reymark Sinagpulo"],
   },
   {
     category: "Ring Bearer",
-    members: ["Ring Bearer Name"],
-  },
-  {
-    category: "Bible Bearer",
-    members: ["Bible Bearer Name"],
-  },
-  {
-    category: "Coin Bearer",
-    members: ["Coin Bearer Name"],
-  },
-  {
-    category: "Flower Girls",
-    members: ["Flower Girl Name 1", "Flower Girl Name 2"],
+    members: ["Maximilian Arlois Lozano Custodio"],
   },
 ] as const;

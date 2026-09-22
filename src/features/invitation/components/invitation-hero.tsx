@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import { InvitationEnvelope } from "@/features/invitation/components/invitation-envelope";
 import { MusicControl } from "@/features/invitation/components/music-control";
 import { useBackgroundMusic } from "@/features/invitation/hooks/use-background-music";
@@ -7,7 +8,8 @@ import { useInvitationOpening } from "@/features/invitation/hooks/use-invitation
 import { weddingConfig } from "@/config/wedding.config";
 
 export function InvitationHero() {
-  const { isOpened, openInvitation } = useInvitationOpening();
+  const { isOpened, isOpening, isComplete, openInvitation, completeOpening } = useInvitationOpening();
+  const reduceMotion = useReducedMotion();
 
   const {
     isPlaying,
@@ -17,15 +19,16 @@ export function InvitationHero() {
     source: weddingConfig.music.source,
   });
 
-  async function handleOpenInvitation() {
+  function handleOpenInvitation() {
+    if (isOpened) return;
     openInvitation();
-    await startMusic();
+    if (weddingConfig.music.enabled) void startMusic();
+  }
 
-    window.setTimeout(() => {
-      document
-        .querySelector("#save-the-date")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }, 1400);
+  function exploreInvitation() {
+    document
+      .querySelector("#save-the-date")
+      ?.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth" });
   }
 
   return (
@@ -74,16 +77,7 @@ export function InvitationHero() {
         />
 
         <div className="relative z-10 mx-auto w-full max-w-3xl text-center">
-          <p
-            className="
-              font-[family-name:var(--font-script)]
-              text-5xl
-              text-[var(--color-dark-olive)]
-              sm:text-6xl
-            "
-          >
-            You are invited
-          </p>
+          
 
           <p
             className="
@@ -95,17 +89,21 @@ export function InvitationHero() {
               sm:text-sm
             "
           >
-            {weddingConfig.event.shortDateLabel}
+           
           </p>
 
-          <div className="mt-10">
-            <InvitationEnvelope isOpened={isOpened} />
+          <div className="mt-4">
+            <InvitationEnvelope
+              isOpened={isOpened}
+              onOpen={handleOpenInvitation}
+              onOpenComplete={completeOpening}
+            />
           </div>
 
           <button
             type="button"
-            onClick={handleOpenInvitation}
-            disabled={isOpened}
+            onClick={isComplete ? exploreInvitation : handleOpenInvitation}
+            disabled={isOpening}
             className="
               mt-10
               min-h-12
@@ -124,8 +122,11 @@ export function InvitationHero() {
               disabled:opacity-50
             "
           >
-            {isOpened ? "Invitation opened" : "Tap to open"}
+            {isComplete ? "Explore invitation" : isOpening ? "Opening your invitation…" : "Tap to open"}
           </button>
+          <p className="sr-only" role="status">
+            {isComplete ? `You are invited to ${weddingConfig.couple.groomFirstName} and ${weddingConfig.couple.brideFirstName}’s wedding on ${weddingConfig.event.dateLabel}.` : ""}
+          </p>
         </div>
       </section>
 

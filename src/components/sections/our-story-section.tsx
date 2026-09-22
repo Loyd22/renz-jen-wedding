@@ -71,10 +71,10 @@ export function OurStorySection() {
               py-14
               text-center
               text-white
-              shadow-[0_24px_70px_rgba(16,45,33,0.14)]
+              shadow-[0_24px_70px_rgba(99,107,47,0.14)]
             "
           >
-            <CoupleMonogram light />
+            <CoupleMonogram />
 
             <p
               className="

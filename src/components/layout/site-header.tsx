@@ -1,6 +1,6 @@
 import { DesktopNavigation } from "@/components/layout/desktop-navigation";
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
-import { weddingConfig } from "@/config/wedding.config";
+import { WeddingLogo } from "@/components/shared/wedding-logo";
 
 export function SiteHeader() {
   return (
@@ -42,7 +42,7 @@ export function SiteHeader() {
             text-[var(--color-soft-gold)]
           "
         >
-          {weddingConfig.couple.compactInitials}
+          <WeddingLogo className="h-12 w-14" sizes="56px" />
         </a>
 
         <DesktopNavigation />

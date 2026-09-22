@@ -7,7 +7,6 @@ export const attendanceOptions = [
 
 export const rsvpSchema = z
   .object({
-
     fullName: z
       .string()
       .trim()
@@ -30,10 +29,10 @@ export const rsvpSchema = z
     }),
 
     guestCount: z
-    .number()
-    .int()
-    .min(0)
-    .max(10),
+      .number()
+      .int()
+      .min(0)
+      .max(10),
 
     guestNames: z
       .string()
@@ -46,12 +45,14 @@ export const rsvpSchema = z
       .max(1000, "Message is too long."),
 
     agreementAccepted: z
-    .boolean()
-    .refine((value) => value, {
-    message: "Please confirm that the information is correct.",
-  }),
+      .boolean()
+      .refine((value) => value, {
+        message:
+          "Please confirm that the information is correct.",
+      }),
   })
   .superRefine((data, context) => {
+    // Only validate guest count when the guest is attending.
     if (
       data.attendance === "attending" &&
       data.guestCount < 1
@@ -59,20 +60,11 @@ export const rsvpSchema = z
       context.addIssue({
         code: "custom",
         path: ["guestCount"],
-        message: "Select at least one attending guest.",
-      });
-    }
-
-    if (
-      data.attendance === "declined" &&
-      data.guestCount !== 0
-    ) {
-      context.addIssue({
-        code: "custom",
-        path: ["guestCount"],
-        message: "Guest count must be zero when declining.",
+        message:
+          "Select at least one attending guest.",
       });
     }
   });
 
-export type RsvpFormValues = z.infer<typeof rsvpSchema>;
+export type RsvpFormValues =
+  z.infer<typeof rsvpSchema>;

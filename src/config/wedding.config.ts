@@ -21,15 +21,15 @@ export const weddingConfig = {
   },
 
   ceremony: {
-    venue: "Ceremony Venue",
-    address: "Ceremony Address",
+    venue: "El Roi Events Place and Resort at Casa Concepcion",
+    address: "",
     timeLabel: "3:00 PM",
     mapUrl: "",
   },
 
   reception: {
-    venue: "Reception Venue",
-    address: "Reception Address",
+    venue: "El Roi Events Place and Resort at Casa Concepcion",
+    address: "",
     timeLabel: "5:00 PM",
     mapUrl: "",
   },
@@ -65,9 +65,10 @@ export const weddingConfig = {
   },
 
   dressCode: {
-    title: "Formal Attire",
+    title: "Attire Guide",
     description:
-      "We invite our guests to wear elegant formal attire in neutral, olive, beige, and earthy tones.",
+      "We would love to see you in your best",
+    attire: "Garden Cocktail Attire",
     men:
       "Suit, long-sleeved formal shirt, trousers, and formal shoes are recommended.",
     women:
@@ -78,20 +79,16 @@ export const weddingConfig = {
     image: "/images/dress-code/guest-attire.png",
     colors: [
       {
-        name: "Dark Olive",
-        value: "#183C2B",
-      },
-      {
-        name: "Sage",
-        value: "#98A88A",
+        name: "Light Yellow",
+        value: "#FFF4B8",
       },
       {
         name: "Beige",
         value: "#D8C9AE",
       },
       {
-        name: "Champagne",
-        value: "#D6BE91",
+        name: "Olive Green",
+        value: "#636B2F",
       },
       {
         name: "Brown",
@@ -168,8 +165,8 @@ export const weddingConfig = {
   },
 
   theme: {
-    darkOliveGreen: "#183C2B",
-    deepGreen: "#102D21",
+    darkOliveGreen: "#636B2F",
+    deepGreen: "#636B2F",
     antiqueGold: "#B89A57",
     softGold: "#D4BF88",
     warmWhite: "#FAF8F3",

@@ -1,39 +1,9 @@
-import { weddingConfig } from "@/config/wedding.config";
+import { WeddingLogo } from "@/components/shared/wedding-logo";
 
-interface CoupleMonogramProps {
-  light?: boolean;
-}
-
-export function CoupleMonogram({
-  light = false,
-}: CoupleMonogramProps) {
+export function CoupleMonogram() {
   return (
-    <div
-      className={`
-        mx-auto
-        flex
-        h-24
-        w-24
-        items-center
-        justify-center
-        rounded-full
-        border
-        ${
-          light
-            ? "border-[var(--color-soft-gold)] text-[var(--color-soft-gold)]"
-            : "border-[var(--color-antique-gold)] text-[var(--color-dark-olive)]"
-        }
-      `}
-    >
-      <span
-        className="
-          font-[family-name:var(--font-serif)]
-          text-2xl
-          italic
-        "
-      >
-        {weddingConfig.couple.initials}
-      </span>
+    <div className="mx-auto flex h-24 w-24 items-center justify-center">
+      <WeddingLogo className="h-20 w-20" sizes="80px" />
     </div>
   );
 }

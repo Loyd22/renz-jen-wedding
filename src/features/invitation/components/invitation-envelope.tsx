@@ -72,14 +72,11 @@ export function InvitationEnvelope({
             >
               <span className={styles.cardContent}>
                 <WeddingLogo className="h-9 w-11 sm:h-12 sm:w-14" sizes="56px" />
-                <span className="mt-1 font-[family-name:var(--font-script)] text-3xl leading-none text-[var(--color-dark-olive)] sm:text-4xl">
-                  You are invited
+                <span className="mt-1 font-[family-name:var(--font-invitation)] text-4xl font-normal leading-none text-[var(--color-dark-olive)] sm:text-7xl">
+                  You are invited!
                 </span>
-                <span className="mt-2 font-[family-name:var(--font-serif)] text-base leading-tight text-[var(--color-dark-olive)] sm:text-xl">
-                  {weddingConfig.couple.groomFirstName} &amp; {weddingConfig.couple.brideFirstName}
-                </span>
-                <span className="mt-2 text-[9px] uppercase tracking-[0.16em] text-[var(--color-antique-gold)] sm:text-[11px]">
-                  {weddingConfig.event.dateLabel}
+                <span className="mt-2 text-[11px] uppercase tracking-[0.16em] text-[var(--color-antique-gold)] sm:text-[15px]">
+                  {weddingConfig.event.numericDateLabel}
                 </span>
               </span>
             </motion.span>

@@ -29,9 +29,9 @@ export function SaveTheDateSection() {
         <p
           className="
             mb-8
-            text-sm
+            text-x1
             uppercase
-            tracking-[0.35em]
+            tracking-[0.45em]
             text-[var(--color-soft-gold)]
           "
         >

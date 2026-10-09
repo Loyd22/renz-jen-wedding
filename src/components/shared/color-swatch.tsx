@@ -14,8 +14,8 @@ export function ColorSwatch({
         className="
           mx-auto
           block
-          h-14
-          w-14
+          h-10
+          w-10
           rounded-full
           border
           border-black/10
@@ -30,9 +30,11 @@ export function ColorSwatch({
         className="
           mt-3
           block
-          text-xs
+          text-[9px]
           uppercase
-          tracking-[0.16em]
+          tracking-[0.08em]
+          sm:text-xs
+          sm:tracking-[0.16em]
           text-[var(--color-charcoal)]/65
         "
       >

@@ -1,5 +1,7 @@
 import {
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   orderBy,
   query,
@@ -10,6 +12,20 @@ import {
 import type { RsvpSubmission } from "@/features/admin/types/rsvp-submission";
 import { getFirestoreDatabase } from "@/infrastructure/firebase/firestore-client";
 import { firestoreCollections } from "@/infrastructure/firebase/firestore-collections";
+
+export async function deleteRsvpSubmission(submissionId: string): Promise<void> {
+  if (!submissionId || submissionId.includes("/")) {
+    throw new Error("Invalid RSVP submission ID.");
+  }
+
+  const database = getFirestoreDatabase();
+  if (!database) {
+    throw new Error("Firebase is not configured.");
+  }
+
+  // Firestore rules enforce the authorized admin's delete permission.
+  await deleteDoc(doc(database, firestoreCollections.rsvpSubmissions, submissionId));
+}
 
 function convertDocument(
   document: QueryDocumentSnapshot<DocumentData>,

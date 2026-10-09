@@ -24,7 +24,7 @@
   inset: auto 9% 0;
   height: 8%;
   border-radius: 50%;
-  background: #252914;
+  background: var(--color-dark-olive);
   filter: blur(12px);
   pointer-events: none;
 }

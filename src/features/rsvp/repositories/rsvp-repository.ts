@@ -4,7 +4,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import type { RsvpFormValues } from "@/features/rsvp/schemas/rsvp-schema";
+import { rsvpSchema, type RsvpFormValues } from "@/features/rsvp/schemas/rsvp-schema";
 import { getFirestoreDatabase } from "@/infrastructure/firebase/firestore-client";
 import { firestoreCollections } from "@/infrastructure/firebase/firestore-collections";
 
@@ -12,17 +12,10 @@ function normalizeName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
-function convertGuestNames(value: string): string[] {
-  return value
-    .split("\n")
-    .map((name) => name.trim())
-    .filter(Boolean)
-    .slice(0, 10);
-}
-
 export async function createRsvpSubmission(
   values: RsvpFormValues,
 ): Promise<string> {
+  const validatedValues = rsvpSchema.parse(values);
   const database = getFirestoreDatabase();
 
   if (!database) {
@@ -32,32 +25,21 @@ export async function createRsvpSubmission(
   }
 
   const submission = {
-    fullName: values.fullName.trim(),
+    fullName: validatedValues.fullName,
 
     normalizedFullName: normalizeName(
-      values.fullName,
+      validatedValues.fullName,
     ),
 
-    email: values.email.trim(),
-
-    phone: values.phone.trim(),
-
-    attendance: values.attendance,
+    attendance: validatedValues.attendance,
 
     guestCount:
-      values.attendance === "attending"
-        ? values.guestCount
+      validatedValues.attendance === "attending"
+        ? 1
         : 0,
 
-    guestNames:
-      values.attendance === "attending"
-        ? convertGuestNames(values.guestNames)
-        : [],
-
-    message: values.message.trim(),
-
     agreementAccepted:
-      values.agreementAccepted,
+      validatedValues.agreementAccepted,
 
     createdAt: serverTimestamp(),
 

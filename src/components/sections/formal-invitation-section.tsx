@@ -1,5 +1,4 @@
 import { CoupleMonogram } from "@/components/shared/couple-monogram";
-import { DecorativeDivider } from "@/components/shared/decorative-divider";
 import { SectionContainer } from "@/components/shared/section-container";
 import { weddingConfig } from "@/config/wedding.config";
 
@@ -24,7 +23,7 @@ export function FormalInvitationSection() {
             px-5
             py-14
             text-center
-            shadow-[0_20px_70px_rgba(99,107,47,0.08)]
+            shadow-[0_20px_70px_rgba(82,82,0,0.08)]
             sm:px-12
             sm:py-20
           "
@@ -34,42 +33,41 @@ export function FormalInvitationSection() {
           <p
             className="
               mt-10
-              text-xs
-              uppercase
-              tracking-[0.3em]
+              mx-auto
+              max-w-md
+              font-[family-name:var(--font-serif)]
+              text-lg
+              leading-6
               text-[var(--color-charcoal)]/65
             "
           >
-            Together with their families
+            By the Grace of God, and with the love and blessing of our parents
           </p>
 
           <p
             className="
               mx-auto
-              mt-6
+              mt-8
               max-w-md
+              font-[family-name:var(--font-serif)]
+              text-lg
               leading-7
               text-[var(--color-charcoal)]/75
             "
           >
-            We can’t wait to celebrate our special day with you!
-            <br />
-            We’re beyond grateful to have you here as we prepare to celebrate one of the most meaningful days of our lives.
+            We,
           </p>
-
-          <div className="my-10">
-            <DecorativeDivider />
-          </div>
 
           <h2
             className="
+              mt-6
               font-[family-name:var(--font-serif)]
-              text-5xl
+              text-4xl
               font-medium
               uppercase
               leading-tight
               text-[var(--color-dark-olive)]
-              sm:text-7xl
+              sm:text-5xl
             "
           >
             {weddingConfig.couple.groomFullName}
@@ -79,69 +77,57 @@ export function FormalInvitationSection() {
             className="
               my-4
               font-[family-name:var(--font-script)]
-              text-4xl
-              text-[var(--color-antique-gold)]
+              text-5xl
+              text-[var(--color-dark-olive)]
             "
           >
-            and
+            &amp;
           </p>
 
           <h2
             className="
               font-[family-name:var(--font-serif)]
-              text-5xl
+              text-4xl
               font-medium
               uppercase
               leading-tight
               text-[var(--color-dark-olive)]
-              sm:text-7xl
+              sm:text-5xl
             "
           >
             {weddingConfig.couple.brideFullName}
           </h2>
 
-          <div className="my-10">
-            <DecorativeDivider />
-          </div>
-
-          <p
-            className="
-              font-[family-name:var(--font-serif)]
-              text-2xl
-              text-[var(--color-dark-olive)]
-            "
-          >
-            {weddingConfig.event.dateLabel}
+          <p className="mx-auto mt-12 max-w-md font-[family-name:var(--font-serif)] text-lg leading-6 text-[var(--color-charcoal)]/75">
+            Invite you to celebrate a love that has grown through time and chosen forever.
           </p>
 
           <p
             className="
-              mt-2
-              text-sm
-              uppercase
-              tracking-[0.25em]
-              text-[var(--color-antique-gold)]
+              mt-12
+              font-[family-name:var(--font-serif)]
+              text-base
+              text-[var(--color-dark-olive)]
             "
           >
-            {weddingConfig.event.timeLabel}
+            <span className="uppercase">{weddingConfig.event.dateLabel}</span>
+            {" | "}
+            {weddingConfig.ceremony.timeLabel}
           </p>
 
           <div
             className="
-              mt-10
+              mt-12
               mx-auto
               max-w-xl
-              border-t
-              border-[var(--color-antique-gold)]/30
-              pt-10
             "
           >
             <div>
               <p
                 className="
-                  text-xs
+                  font-[family-name:var(--font-serif)]
+                  text-base
                   uppercase
-                  tracking-[0.25em]
                   text-[var(--color-antique-gold)]
                 "
               >
@@ -150,9 +136,9 @@ export function FormalInvitationSection() {
 
               <p
                 className="
-                  mt-3
                   font-[family-name:var(--font-serif)]
-                  text-xl
+                  text-base
+                  uppercase
                   text-[var(--color-dark-olive)]
                 "
               >

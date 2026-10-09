@@ -16,7 +16,6 @@ export function FaqSection() {
     >
       <SectionContainer>
         <SectionHeading
-          eyebrow="Helpful Information"
           title="Frequently Asked Questions"
           description="Here are a few helpful details before the celebration."
         />

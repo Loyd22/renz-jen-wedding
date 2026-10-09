@@ -17,7 +17,7 @@ export function CountdownSection() {
       <SectionContainer>
         <SectionHeading
           eyebrow="Counting down"
-          title="Until We Say I Do"
+          title={'Until We Say "I Do"'}
           description={`${weddingConfig.event.dateLabel} at ${weddingConfig.event.timeLabel}`}
           light
         />
@@ -28,18 +28,6 @@ export function CountdownSection() {
           />
         </div>
 
-        <p
-          className="
-            mt-8
-            text-center
-            text-xs
-            uppercase
-            tracking-[0.25em]
-            text-white/55
-          "
-        >
-          {weddingConfig.event.timezoneLabel}
-        </p>
       </SectionContainer>
     </section>
   );

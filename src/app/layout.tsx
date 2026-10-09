@@ -3,9 +3,17 @@ import {
   Allura,
   Cormorant_Garamond,
   DM_Sans,
+  Montserrat,
+  Waterfall,
 } from "next/font/google";
 
 import "./globals.css";
+
+const montserratFont = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: "400",
+});
 
 // Elegant serif font used for names, dates, and formal headings.
 const serifFont = Cormorant_Garamond({
@@ -19,6 +27,12 @@ const scriptFont = Allura({
   variable: "--font-script",
   subsets: ["latin"],
   weight: ["400"],
+});
+
+const invitationFont = Waterfall({
+  variable: "--font-invitation",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 // Clean font used for paragraphs, buttons, labels, and forms.
@@ -54,7 +68,9 @@ export default function RootLayout({
         className={`
           ${serifFont.variable}
           ${scriptFont.variable}
+          ${invitationFont.variable}
           ${sansFont.variable}
+          ${montserratFont.variable}
           font-[family-name:var(--font-sans)]
           antialiased
         `}

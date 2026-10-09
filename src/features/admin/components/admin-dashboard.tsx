@@ -10,6 +10,7 @@ import {
   LogOut,
   Printer,
   RefreshCw,
+  Trash2,
   Users,
   UserCheck,
   UserX,
@@ -20,6 +21,7 @@ import { signOut } from "firebase/auth";
 import { getFirebaseAuth } from "@/infrastructure/firebase/firebase-auth";
 
 import {
+  deleteRsvpSubmission,
   getRsvpSubmissions,
 } from "@/features/admin/repositories/admin-rsvp-repository";
 
@@ -47,6 +49,8 @@ type StatusFilter =
 export function AdminDashboard({
   onLogout,
 }: AdminDashboardProps) {
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteNotice, setDeleteNotice] = useState<string | null>(null);
   const [
     submissions,
     setSubmissions,
@@ -104,6 +108,7 @@ export function AdminDashboard({
   }, []);
 
   async function handleRefresh() {
+    if (deletingId || isLoading) return;
     setIsLoading(true);
     setError(null);
 
@@ -123,6 +128,29 @@ export function AdminDashboard({
       );
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleDelete(submission: RsvpSubmission) {
+    if (deletingId || isLoading) return;
+    if (!window.confirm(`Delete the RSVP for ${submission.fullName}? This permanently removes this response and cannot be undone.`)) {
+      return;
+    }
+
+    setDeletingId(submission.id);
+    setDeleteNotice(null);
+    setError(null);
+    try {
+      await deleteRsvpSubmission(submission.id);
+      setSubmissions((current) => current.filter((item) => item.id !== submission.id));
+      setDeleteNotice(`RSVP for ${submission.fullName} deleted.`);
+    } catch (error) {
+      const code = (error as { code?: string }).code;
+      setError(code === "permission-denied"
+        ? "You do not have permission to delete this RSVP. Sign in with the authorized admin account."
+        : "Could not delete this RSVP. Please try again.");
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -258,7 +286,11 @@ export function AdminDashboard({
         }
       }
 
-      return guests;
+      return guests.sort((first, second) =>
+        first.name.trim().localeCompare(second.name.trim(), "en-PH", {
+          sensitivity: "base",
+        }),
+      );
     }, [submissions]);
 
   async function handleLogout() {
@@ -364,7 +396,7 @@ export function AdminDashboard({
                 void handleRefresh()
               }
               disabled={
-                isLoading
+                isLoading || deletingId !== null
               }
               className="
                 flex
@@ -609,6 +641,12 @@ export function AdminDashboard({
           </button>
         </div>
 
+        {deleteNotice && (
+          <p role="status" className="mt-6 text-[var(--color-dark-olive)]">
+            {deleteNotice}
+          </p>
+        )}
+
         {/* Error */}
         {error && (
           <p
@@ -651,7 +689,7 @@ export function AdminDashboard({
             <table
               className="
                 w-full
-                min-w-[1000px]
+                min-w-[1100px]
                 border-collapse
                 bg-white
                 text-left
@@ -666,33 +704,26 @@ export function AdminDashboard({
               >
                 <tr>
                   <th className="px-4 py-4">
-                    Guest
+                    Full Name
+                  </th>
+
+                  <th className="px-4 py-4">Normalized Name</th>
+
+                  <th className="px-4 py-4">
+                    Attendance
                   </th>
 
                   <th className="px-4 py-4">
-                    Status
+                    Guest Count
                   </th>
 
-                  <th className="px-4 py-4">
-                    Guests
-                  </th>
+                  <th className="px-4 py-4">Confirmation Accepted</th>
 
                   <th className="px-4 py-4">
-                    Additional
-                    Guests
+                    Created At
                   </th>
-
-                  <th className="px-4 py-4">
-                    Contact
-                  </th>
-
-                  <th className="px-4 py-4">
-                    Message
-                  </th>
-
-                  <th className="px-4 py-4">
-                    Submitted
-                  </th>
+                  <th className="px-4 py-4">Updated At</th>
+                  <th className="px-4 py-4">Actions</th>
                 </tr>
               </thead>
 
@@ -716,6 +747,10 @@ export function AdminDashboard({
                             submission.fullName
                           }
                         </p>
+                      </td>
+
+                      <td className="px-4 py-4">
+                        {submission.normalizedFullName || "—"}
                       </td>
 
                       <td className="px-4 py-4">
@@ -755,48 +790,28 @@ export function AdminDashboard({
                       </td>
 
                       <td className="px-4 py-4">
-                        {submission
-                          .guestNames
-                          .length >
-                        0
-                          ? submission.guestNames.join(
-                              ", ",
-                            )
-                          : "—"}
-                      </td>
-
-                      <td className="px-4 py-4">
-                        <div>
-                          {submission.email ||
-                            "—"}
-                        </div>
-
-                        <div
-                          className="
-                            mt-1
-                            text-[var(--color-charcoal)]/60
-                          "
-                        >
-                          {submission.phone ||
-                            "—"}
-                        </div>
-                      </td>
-
-                      <td
-                        className="
-                          max-w-xs
-                          px-4
-                          py-4
-                        "
-                      >
-                        {submission.message ||
-                          "—"}
+                        {submission.agreementAccepted ? "Yes" : "No"}
                       </td>
 
                       <td className="px-4 py-4">
                         {formatTimestamp(
                           submission.createdAt,
                         )}
+                      </td>
+                      <td className="px-4 py-4">
+                        {formatTimestamp(submission.updatedAt)}
+                      </td>
+                      <td className="px-4 py-4">
+                        <button
+                          type="button"
+                          onClick={() => void handleDelete(submission)}
+                          disabled={deletingId !== null || isLoading}
+                          aria-label={`Delete RSVP for ${submission.fullName}`}
+                          className="inline-flex min-h-11 items-center gap-2 rounded border border-red-700/30 px-3 py-2 text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <Trash2 aria-hidden="true" size={16} />
+                          {deletingId === submission.id ? "Deleting..." : "Delete"}
+                        </button>
                       </td>
                     </tr>
                   ),
@@ -877,11 +892,17 @@ export function AdminDashboard({
         <table
           className="
             w-full
+            table-fixed
             border-collapse
             text-left
             text-sm
           "
         >
+          <colgroup>
+            <col className="w-12" />
+            <col />
+            <col className="w-24" />
+          </colgroup>
           <thead>
             <tr>
               <th
@@ -914,18 +935,7 @@ export function AdminDashboard({
                   py-2
                 "
               >
-                Type
-              </th>
-
-              <th
-                className="
-                  border
-                  border-black
-                  px-3
-                  py-2
-                "
-              >
-                RSVP Under
+                Check-in
               </th>
             </tr>
           </thead>
@@ -969,20 +979,10 @@ export function AdminDashboard({
                       py-2
                     "
                   >
-                    {guest.type}
-                  </td>
-
-                  <td
-                    className="
-                      border
-                      border-black
-                      px-3
-                      py-2
-                    "
-                  >
-                    {
-                      guest.primaryGuest
-                    }
+                    <span
+                      aria-label="Unchecked attendance box"
+                      className="mx-auto block h-5 w-5 border border-black bg-white"
+                    />
                   </td>
                 </tr>
               ),
@@ -1067,6 +1067,7 @@ function formatTimestamp(
           "medium",
         timeStyle:
           "short",
+        timeZone: "Asia/Manila",
       },
     );
 }

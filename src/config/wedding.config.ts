@@ -1,29 +1,30 @@
 export const weddingConfig = {
   couple: {
     groomFirstName: "Renz",
-    groomFullName: "Renz",
+    groomFullName: "Paul Clarenz",
     brideFirstName: "Jen",
-    brideFullName: "Jen",
+    brideFullName: "Jenny Lou",
     initials: "R & J",
     compactInitials: "RJ",
     hashtag: "#RenzAndJen2026",
   },
 
   event: {
-    dateTime: "2026-12-10T15:00:00+08:00",
+    dateTime: "2026-12-10T16:00:00+08:00",
     dateLabel: "December 10, 2026",
+    numericDateLabel: "12.10.2026",
     shortDateLabel: "12.10.26",
-    timeLabel: "3:00 PM",
+    timeLabel: "4:00 PM",
     timezone: "Asia/Manila",
     timezoneLabel: "Philippine Standard Time",
-    rsvpDeadline: "2026-11-10T23:59:59+08:00",
-    rsvpDeadlineLabel: "November 10, 2026",
+    rsvpDeadline: "2026-11-15T23:59:59+08:00",
+    rsvpDeadlineLabel: "November 15, 2026",
   },
 
   ceremony: {
-    venue: "El Roi Events Place and Resort at Casa Concepcion",
-    address: "",
-    timeLabel: "3:00 PM",
+    venue: "El Roi Events Place at Casa Concepcion",
+    address: "9103 Pooc 1, Silang, Cavite, Philippines, 4118",
+    timeLabel: "4:00 PM",
     mapUrl: "",
   },
 
@@ -65,9 +66,9 @@ export const weddingConfig = {
   },
 
   dressCode: {
-    title: "Attire Guide",
+    title: "ATTIRE",
     description:
-      "We would love to see you in your best",
+      "We would be delighted to see you in",
     attire: "Garden Cocktail Attire",
     men:
       "Suit, long-sleeved formal shirt, trousers, and formal shoes are recommended.",
@@ -87,12 +88,12 @@ export const weddingConfig = {
         value: "#D8C9AE",
       },
       {
-        name: "Olive Green",
-        value: "#636B2F",
-      },
-      {
         name: "Brown",
         value: "#765742",
+      },
+      {
+        name: "Olive",
+        value: "#525200",
       },
       {
         name: "Black",
@@ -103,12 +104,12 @@ export const weddingConfig = {
 
   schedule: [
     {
-      time: "2:30 PM",
+      time: "3:30 PM",
       title: "Guest Arrival",
       description: "Guests may begin arriving at the ceremony venue.",
     },
     {
-      time: "3:00 PM",
+      time: "4:00 PM",
       title: "Wedding Ceremony",
       description: "The wedding ceremony begins.",
     },
@@ -144,10 +145,10 @@ export const weddingConfig = {
   title: "With Love and Gratitude",
 
   message:
-    "Your presence at our wedding is the greatest gift we could ask for. For those who wish to give, any thoughtful gesture will be sincerely appreciated.",
+    "Your love, prayers, and presence are the greatest gift to us.",
 
   secondaryMessage:
-    "Additional gift or registry information may be provided here when available.",
+    "Should you wish to bless us further, a monetary gift would be warmly appreciated.",
 
   registryUrl: "",
 
@@ -165,8 +166,8 @@ export const weddingConfig = {
   },
 
   theme: {
-    darkOliveGreen: "#636B2F",
-    deepGreen: "#636B2F",
+    darkOliveGreen: "#525200",
+    deepGreen: "#525200",
     antiqueGold: "#B89A57",
     softGold: "#D4BF88",
     warmWhite: "#FAF8F3",

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Shirt, Sparkles } from "lucide-react";
 
 import { ColorSwatch } from "@/components/shared/color-swatch";
 import { DecorativeDivider } from "@/components/shared/decorative-divider";
@@ -20,102 +19,17 @@ export function DressCodeSection() {
     >
       <SectionContainer>
         <SectionHeading
-          eyebrow="What to Wear"
           title={weddingConfig.dressCode.title}
           description={
             <>
               {weddingConfig.dressCode.description}
               <br />
-              <strong>{weddingConfig.dressCode.attire}</strong>
+              <span className="font-[family-name:var(--font-serif)] text-xl font-normal">
+                {weddingConfig.dressCode.attire}
+              </span>
             </>
           }
         />
-
-        {/* Attire instructions for gentlemen and ladies */}
-        <div
-          className="
-            mt-14
-            grid
-            gap-6
-            lg:grid-cols-2
-          "
-        >
-          <article
-            className="
-              border
-              border-[var(--color-antique-gold)]/30
-              bg-white
-              p-8
-              text-center
-              sm:p-10
-            "
-          >
-            <Shirt
-              aria-hidden="true"
-              className="mx-auto text-[var(--color-antique-gold)]"
-              size={30}
-            />
-
-            <h3
-              className="
-                mt-5
-                font-[family-name:var(--font-serif)]
-                text-3xl
-                text-[var(--color-dark-olive)]
-              "
-            >
-              Gentlemen
-            </h3>
-
-            <p
-              className="
-                mt-4
-                leading-7
-                text-[var(--color-charcoal)]/70
-              "
-            >
-              {weddingConfig.dressCode.men}
-            </p>
-          </article>
-
-          <article
-            className="
-              border
-              border-[var(--color-antique-gold)]/30
-              bg-white
-              p-8
-              text-center
-              sm:p-10
-            "
-          >
-            <Sparkles
-              aria-hidden="true"
-              className="mx-auto text-[var(--color-antique-gold)]"
-              size={30}
-            />
-
-            <h3
-              className="
-                mt-5
-                font-[family-name:var(--font-serif)]
-                text-3xl
-                text-[var(--color-dark-olive)]
-              "
-            >
-              Ladies
-            </h3>
-
-            <p
-              className="
-                mt-4
-                leading-7
-                text-[var(--color-charcoal)]/70
-              "
-            >
-              {weddingConfig.dressCode.women}
-            </p>
-          </article>
-        </div>
 
         {/* Responsive illustration showing suggested guest attire */}
             <div
@@ -173,10 +87,9 @@ export function DressCodeSection() {
               mt-9
               grid
               max-w-3xl
-              grid-cols-3
-              gap-x-4
-              gap-y-8
-              sm:grid-cols-5
+              grid-cols-5
+              gap-x-2
+              sm:gap-x-4
             "
           >
             {weddingConfig.dressCode.colors.map((color) => (

@@ -16,8 +16,7 @@ export function WeddingMapSection() {
     >
       <SectionContainer>
         <SectionHeading
-          eyebrow="Getting There"
-          title="Wedding Map"
+          title="VENUE"
           description="A simple guide to help you find your way to our ceremony and reception venue."
         />
 

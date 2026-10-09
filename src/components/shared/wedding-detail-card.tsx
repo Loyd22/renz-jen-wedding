@@ -25,7 +25,7 @@ export function WeddingDetailCard({
         bg-white
         p-8
         text-center
-        shadow-[0_20px_50px_rgba(99,107,47,0.06)]
+        shadow-[0_20px_50px_rgba(82,82,0,0.06)]
         sm:p-10
       "
     >

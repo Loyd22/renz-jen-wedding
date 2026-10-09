@@ -16,8 +16,7 @@ export function WeddingScheduleSection() {
     >
       <SectionContainer>
         <SectionHeading
-          eyebrow="Order of Events"
-          title="Wedding Schedule"
+          title="TIMELINE"
           description="A guide to the celebrations planned for our wedding day."
           light
         />

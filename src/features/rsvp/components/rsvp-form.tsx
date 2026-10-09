@@ -47,7 +47,6 @@ export function RsvpForm() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: {
       errors,
@@ -58,17 +57,10 @@ export function RsvpForm() {
 
     defaultValues: {
       fullName: "",
-      email: "",
-      phone: "",
       attendance: "attending",
-      guestCount: 1,
-      guestNames: "",
-      message: "",
       agreementAccepted: false,
     },
   });
-
-  const attendance = watch("attendance");
 
   async function onSubmit(
     values: RsvpFormValues,
@@ -83,12 +75,7 @@ export function RsvpForm() {
 
       reset({
         fullName: "",
-        email: "",
-        phone: "",
         attendance: "attending",
-        guestCount: 1,
-        guestNames: "",
-        message: "",
         agreementAccepted: false,
       });
     } catch (error) {
@@ -192,7 +179,6 @@ export function RsvpForm() {
         className="
           grid
           gap-6
-          sm:grid-cols-2
         "
       >
         <FormField
@@ -210,35 +196,6 @@ export function RsvpForm() {
           />
         </FormField>
 
-        <FormField
-          label="Email Address"
-          error={
-            errors.email?.message
-          }
-        >
-          <input
-            {...register("email")}
-            type="email"
-            autoComplete="email"
-            placeholder="guest@example.com"
-            className={inputClassName}
-          />
-        </FormField>
-
-        <FormField
-          label="Phone Number"
-          error={
-            errors.phone?.message
-          }
-        >
-          <input
-            {...register("phone")}
-            type="tel"
-            autoComplete="tel"
-            placeholder="09XX XXX XXXX"
-            className={inputClassName}
-          />
-        </FormField>
       </div>
 
       {/* Attendance selection */}
@@ -318,90 +275,6 @@ export function RsvpForm() {
           }
         />
       </fieldset>
-
-      {/* Only show these fields if attending */}
-      {attendance ===
-        "attending" && (
-        <div
-          className="
-            mt-8
-            space-y-6
-          "
-        >
-          <FormField
-            label="Number of Attending Guests"
-            error={
-              errors.guestCount
-                ?.message
-            }
-          >
-            <select
-              {...register(
-                "guestCount",
-                {
-                  valueAsNumber: true,
-                },
-              )}
-              className={
-                inputClassName
-              }
-            >
-              {[
-                1, 2, 3, 4, 5,
-                6, 7, 8, 9, 10,
-              ].map(
-                (count) => (
-                  <option
-                    key={count}
-                    value={count}
-                  >
-                    {count}
-                  </option>
-                ),
-              )}
-            </select>
-          </FormField>
-
-          <FormField
-            label="Names of Additional Guests"
-            error={
-              errors.guestNames
-                ?.message
-            }
-            helperText="Enter one name per line."
-          >
-            <textarea
-              {...register(
-                "guestNames",
-              )}
-              rows={4}
-              placeholder={`Maria Dela Cruz\nPedro Dela Cruz`}
-              className={
-                inputClassName
-              }
-            />
-          </FormField>
-        </div>
-      )}
-
-      {/* Message */}
-      <div className="mt-8">
-        <FormField
-          label="Message for the Couple"
-          error={
-            errors.message?.message
-          }
-        >
-          <textarea
-            {...register("message")}
-            rows={4}
-            placeholder="Leave a message for Renz and Jen"
-            className={
-              inputClassName
-            }
-          />
-        </FormField>
-      </div>
 
       {/* Confirmation */}
       <label

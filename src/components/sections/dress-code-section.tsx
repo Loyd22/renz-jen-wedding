@@ -74,7 +74,8 @@ export function DressCodeSection() {
           <h3
             className="
               font-[family-name:var(--font-serif)]
-              text-3xl
+              text-2xl
+              sm:text-3xl
               text-[var(--color-dark-olive)]
             "
           >

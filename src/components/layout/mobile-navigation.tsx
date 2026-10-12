@@ -13,7 +13,7 @@ export function MobileNavigation() {
   }
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -44,6 +44,8 @@ export function MobileNavigation() {
             left-4
             right-4
             top-20
+            max-h-[calc(100dvh-6rem)]
+            overflow-y-auto
             rounded-sm
             border
             border-white/10

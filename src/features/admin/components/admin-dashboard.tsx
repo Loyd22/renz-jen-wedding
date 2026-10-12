@@ -894,8 +894,9 @@ export function AdminDashboard({
             w-full
             table-fixed
             border-collapse
+            leading-4
             text-left
-            text-sm
+            text-xs
           "
         >
           <colgroup>
@@ -909,8 +910,8 @@ export function AdminDashboard({
                 className="
                   border
                   border-black
-                  px-3
-                  py-2
+                  px-2
+                  py-1
                 "
               >
                 #
@@ -920,8 +921,8 @@ export function AdminDashboard({
                 className="
                   border
                   border-black
-                  px-3
-                  py-2
+                  px-2
+                  py-1
                 "
               >
                 Guest Name
@@ -931,8 +932,8 @@ export function AdminDashboard({
                 className="
                   border
                   border-black
-                  px-3
-                  py-2
+                  px-2
+                  py-1
                 "
               >
                 Check-in
@@ -953,8 +954,8 @@ export function AdminDashboard({
                     className="
                       border
                       border-black
-                      px-3
-                      py-2
+                      px-2
+                      py-1
                     "
                   >
                     {index + 1}
@@ -964,8 +965,8 @@ export function AdminDashboard({
                     className="
                       border
                       border-black
-                      px-3
-                      py-2
+                      px-2
+                      py-1
                     "
                   >
                     {guest.name}
@@ -975,13 +976,13 @@ export function AdminDashboard({
                     className="
                       border
                       border-black
-                      px-3
-                      py-2
+                      px-2
+                      py-1
                     "
                   >
                     <span
                       aria-label="Unchecked attendance box"
-                      className="mx-auto block h-5 w-5 border border-black bg-white"
+                      className="mx-auto block h-3.5 w-3.5 border border-black bg-white"
                     />
                   </td>
                 </tr>

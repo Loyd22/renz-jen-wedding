@@ -69,6 +69,7 @@ export function FaqItem({
         <p
           className="
             max-w-3xl
+            whitespace-pre-line
             leading-7
             text-[var(--color-charcoal)]/70
           "

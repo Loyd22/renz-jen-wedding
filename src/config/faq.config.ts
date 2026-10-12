@@ -9,7 +9,7 @@ export const faqConfig = [
   {
     question: "Can I bring a plus-one?",
     answer:
-      "Please refer to the number of reserved seats included in your invitation. Contact the couple if you need clarification.",
+      "We kindly ask that only confirmed guests attend, as we have limited seating. If you wish to bring a plus-one, please contact the couple for confirmation.",
   },
   {
     question: "Are children invited?",
@@ -39,6 +39,6 @@ export const faqConfig = [
   {
     question: "Who should I contact if I have questions?",
     answer:
-      "Please contact the wedding representative listed in the wedding details section.",
+      "For any questions or concerns, please feel free to contact our wedding representatives:\nMr. John Loyd Viray and Ms. Viktoria Vinzon",
   },
 ] as const;

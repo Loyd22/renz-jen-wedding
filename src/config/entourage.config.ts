@@ -76,11 +76,11 @@ export const secondarySponsorsConfig = [
   },
   {
     category: "To Clothe Us as One",
-    members: ["Mr. John Loyd Viray & Mrs. Viktoria Vinzon"],
+    members: ["Mr. John Loyd Viray & Ms. Viktoria Vinzon"],
   },
   {
     category: "To Bind Us Together",
-    members: ["Mr. Reymark Sinagpulo & Mrs. Jobell Durante"],
+    members: ["Mr. Peter Raphael Vinzon & Mrs. Jobell Fontabla"],
   },
 ] as const;
 

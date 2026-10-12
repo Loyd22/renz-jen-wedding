@@ -14,8 +14,8 @@ export function ColorSwatch({
         className="
           mx-auto
           block
-          h-10
-          w-10
+          h-8
+          w-8
           rounded-full
           border
           border-black/10

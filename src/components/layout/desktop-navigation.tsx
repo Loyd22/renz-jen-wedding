@@ -4,7 +4,7 @@ export function DesktopNavigation() {
   return (
     <nav
       aria-label="Main navigation"
-      className="hidden items-center gap-8 md:flex"
+      className="hidden items-center gap-6 lg:flex xl:gap-8"
     >
       {navigationItems.map((item) => (
         <a

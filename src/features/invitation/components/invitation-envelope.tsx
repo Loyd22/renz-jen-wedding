@@ -23,7 +23,7 @@ export function InvitationEnvelope({
   const duration = (seconds: number) => reduceMotion ? 0 : seconds;
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-md">
+    <div className={`${styles.container} relative mx-auto aspect-square w-full max-w-md`}>
       <motion.div
         aria-hidden="true"
         className={styles.groundShadow}
@@ -71,11 +71,11 @@ export function InvitationEnvelope({
               onAnimationComplete={() => { if (isOpened) onOpenComplete(); }}
             >
               <span className={styles.cardContent}>
-                <WeddingLogo className="h-9 w-11 sm:h-12 sm:w-14" sizes="56px" />
-                <span className="mt-1 font-[family-name:var(--font-invitation)] text-4xl font-normal leading-none text-[var(--color-dark-olive)] sm:text-7xl">
+                <WeddingLogo className={styles.cardLogo} sizes="80px" />
+                <span className={styles.cardTitle}>
                   You are invited!
                 </span>
-                <span className="mt-2 text-[11px] uppercase tracking-[0.16em] text-[var(--color-antique-gold)] sm:text-[15px]">
+                <span className={styles.cardDate}>
                   {weddingConfig.event.numericDateLabel}
                 </span>
               </span>

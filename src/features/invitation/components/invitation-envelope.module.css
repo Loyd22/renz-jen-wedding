@@ -1,4 +1,8 @@
 /* Paper geometry lives here; choreography lives in envelope-motion.ts. */
+.container {
+  container-type: inline-size;
+}
+
 .stage {
   position: absolute;
   inset: 40% 0 4%;
@@ -86,6 +90,32 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+/* Scale with the envelope, including narrow phones and tablet layouts. */
+.cardLogo {
+  width: clamp(3rem, 18cqw, 5rem);
+  height: clamp(2.5rem, 15cqw, 4.25rem);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  margin-top: 0.25rem;
+  font-family: var(--font-invitation);
+  font-size: clamp(2.5rem, 16cqw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--color-dark-olive);
+}
+
+.cardDate {
+  margin-top: 0.5rem;
+  font-size: clamp(0.875rem, 3.8cqw, 1.0625rem);
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-antique-gold);
 }
 
 .pocket {
